@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS books (
     publisher VARCHAR(255) NOT NULL
 );
 
-INSERT INTO books (title, type, publisher) VALUES
-('Clean Code', 'Programming', 'Prentice Hall'),
-('The Pragmatic Programmer', 'Programming', 'Addison-Wesley');
+INSERT INTO books (id,title, type, publisher) VALUES
+('1','Clean Code', 'Programming', 'Prentice Hall'),
+('2', 'The Pragmatic Programmer', 'Programming', 'Addison-Wesley');

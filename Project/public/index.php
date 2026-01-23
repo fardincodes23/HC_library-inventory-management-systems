@@ -11,6 +11,11 @@ switch ($controllerName) {
         $controller = new BookController();
         break;
 
+    case 'auth':
+        require_once APP_PATH . '/controllers/AuthController.php';
+        $controller = new AuthController();
+        break;
+
     default:
         http_response_code(404);
         echo 'Controller not found';

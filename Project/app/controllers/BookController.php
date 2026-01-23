@@ -4,6 +4,7 @@ require_once APP_PATH . '/models/BookModel.php';
 
 class BookController
 {
+
     private BookModel $model;
 
     public function __construct()
@@ -12,11 +13,19 @@ class BookController
         global $mysqli;
         $this->model = new BookModel($mysqli);
     }
+    private function requireLogin(): void
+    {
+        if (empty($_SESSION['user_id'])) {
+            header('Location: index.php?controller=auth&action=login');
+            exit;
+        }
+    }
 
     // GET /index.php?controller=book&action=index
     // Shows main inventory list
     public function index(): void
     {
+        $this->requireLogin();
         $books = $this->model->getAll();
         include VIEW_PATH . '/books/list.php';
     }
@@ -25,6 +34,7 @@ class BookController
     // Shows form and handles “add book”
     public function create(): void
     {
+        $this->requireLogin();
         $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

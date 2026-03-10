@@ -1,13 +1,25 @@
 <?php
-require_once __DIR__ . '/config.php';
+class Database {
+    private $host = 'localhost';
+    private $db_name = 'lims';
+    private $username = 'root';
+    private $password = '';
+    private $conn;
 
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$dbname = 'lims';
-
-$mysqli = new mysqli($host, $user, $pass, $dbname);
-
-if ($mysqli->connect_error) {
-    die('Database connection failed: ' . $mysqli->connect_error);
+    public function getConnection() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO(
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
+                $this->username,
+                $this->password
+            );
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            echo "Connection Error: " . $e->getMessage();
+        }
+        return $this->conn;
+    }
 }
+?>

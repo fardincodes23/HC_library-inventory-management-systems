@@ -1,39 +1,76 @@
 <?php
-class BookModel
-{
-    private mysqli $db;
+require_once __DIR__ . '/../config/database.php';
 
-    // Why: inject the db so we can reuse same connection everywhere
-    public function __construct(mysqli $db)
-    {
-        $this->db = $db;
+class BookModel {
+    private $conn;
+    private $table = 'books';
+
+    public function __construct() {
+        $database = new Database();
+        $this->conn = $database->getConnection();
     }
 
-    // List all books – used for base inventory and some reports later
-    public function getAll(): array
-    {
-        $sql    = "SELECT id, title, type, publisher FROM books ORDER BY title";
-        $result = $this->db->query($sql);
-
-        $rows = [];
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                $rows[] = $row;
-            }
-        }
-        return $rows;
+    public function getAll() {
+        $query = "SELECT * FROM " . $this->table . " ORDER BY type, title";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    // Simple create – lets Admin/User add new books
-    public function create(string $title, string $type, string $publisher): bool
-    {
-        $sql  = "INSERT INTO books (title, type, publisher) VALUES (?, ?, ?)";
-        $stmt = $this->db->prepare($sql);
-        if (!$stmt) {
-            return false;
-        }
+    public function getById($id) {
+        $query = "SELECT * FROM " . $this->table . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 
-        $stmt->bind_param('sss', $title, $type, $publisher);
+    public function create($title, $type, $publisher, $supplier_id = null) {
+        $query = "INSERT INTO " . $this->table . " (title, type, publisher, supplier_id) VALUES (:title, :type, :publisher, :supplier_id)";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':type', $type);
+        $stmt->bindParam(':publisher', $publisher);
+        $stmt->bindParam(':supplier_id', $supplier_id);
+
         return $stmt->execute();
     }
+
+    public function update($id, $title, $type, $publisher, $supplier_id = null) {
+        $query = "UPDATE " . $this->table . " SET title = :title, type = :type, publisher = :publisher, supplier_id = :supplier_id WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':title', $title);
+        $stmt->bindParam(':type', $type);
+        $stmt->bindParam(':publisher', $publisher);
+        $stmt->bindParam(':supplier_id', $supplier_id);
+
+        return $stmt->execute();
+    }
+
+    public function delete($id) {
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+    public function getByTypeTitle() {
+        return $this->getAll(); // Already sorted by type, title
+    }
+
+    public function getOverdue() {
+        $query = "SELECT b.*, l.due_date, c.name as client_name 
+                  FROM " . $this->table . " b 
+                  INNER JOIN loans l ON b.id = l.book_id 
+                  INNER JOIN clients c ON l.client_id = c.id 
+                  WHERE l.return_date IS NULL AND l.due_date < CURDATE() 
+                  ORDER BY l.due_date";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
+?>

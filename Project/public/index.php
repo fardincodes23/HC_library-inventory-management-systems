@@ -1,31 +1,61 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once __DIR__ . '/../app/config/config.php';
 
-// Decide which controller + action to call
-$controllerName = $_GET['controller'] ?? 'book';
-$actionName     = $_GET['action'] ?? 'index';
 
-switch ($controllerName) {
-    case 'book':
-      require_once APP_PATH . '/controllers/BookController.php';
-        $controller = new BookController();
-        break;
+require_once __DIR__ . '/../app/config/config.php';
+require_once __DIR__ . '/../app/controllers/AuthController.php';
+require_once __DIR__ . '/../app/controllers/BookController.php';
+require_once __DIR__ . '/../app/controllers/ClientController.php';
+require_once __DIR__ . '/../app/controllers/LoanController.php';
 
-    case 'auth':
-        require_once APP_PATH . '/controllers/AuthController.php';
-        $controller = new AuthController();
-        break;
 
-    default:
-        http_response_code(404);
-        echo 'Controller not found';
-        exit;
+$page = $_GET['page'] ?? '';
+
+$authController = new AuthController();
+$bookController = new BookController();
+$clientController = new ClientController();
+$loanController = new LoanController();
+
+if ($page === 'login') {
+    $authController->login();
+} elseif ($page === 'logout') {
+    $authController->logout();
+} else {
+    // All other pages require login
+    requireLogin();
+
+    switch ($page) {
+        case 'books':
+            $bookController->index();
+            break;
+        case 'books_create':
+            $bookController->create();
+            break;
+        case 'clients':
+            $clientController->index();
+            break;
+        case 'clients_create':
+            $clientController->create();
+            break;
+        case 'loans':
+            $loanController->index();
+            break;
+        case 'loan_checkout':
+            $loanController->checkout();
+            break;
+        case 'loan_return':
+            $loanController->returnBook();
+            break;
+        default:
+            // Simple home page
+            include __DIR__ . '/../app/views/layout/header.php';
+            echo '<h2>Welcome to LIMS</h2><p>Use the navigation menu to manage books, clients, and loans.</p>';
+            include __DIR__ . '/../app/views/layout/footer.php';
+            break;
+    }
 }
-
-if (!method_exists($controller, $actionName)) {
-    http_response_code(404);
-    echo 'Action not found';
-    exit;
-}
-
-$controller->$actionName();
+?>

@@ -1,20 +1,29 @@
-<?php require_once APP_PATH . '/config/config.php'; ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>LIMS - Library Information Management System</title>
+    <title>LIMS</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; }
+        header { background: #333; color: #fff; padding: 10px; }
+        nav a { color: #fff; margin-right: 10px; text-decoration: none; }
+        .container { padding: 20px; }
+        .error { color: red; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 6px 8px; }
+    </style>
 </head>
 <body>
 <header>
-    <h1>Library Information Management System</h1>
-    <nav>
-        <a href="<?= BASE_URL ?>/index.php?controller=book&action=index">Books</a>
-        <?php if (!empty($_SESSION['user_id'])): ?>
-            <span> | Logged in as <?= htmlspecialchars($_SESSION['username']) ?> (<?= htmlspecialchars($_SESSION['role']) ?>)</span>
-            <a href="<?= BASE_URL ?>/index.php?controller=auth&action=logout">Logout</a>
-        <?php else: ?>
-            <a href="<?= BASE_URL ?>/index.php?controller=auth&action=login">Login</a>
-        <?php endif; ?>    </nav>
+    <span>LIMS</span>
+    <?php if (isset($_SESSION['username'])): ?>
+        <nav>
+            <a href="index.php">Home</a>
+            <a href="index.php?page=books">Books</a>
+            <a href="index.php?page=clients">Clients</a>
+            <a href="index.php?page=loans">Loans</a>
+            <a href="index.php?page=logout">Logout (<?= htmlspecialchars($_SESSION['username']) ?>)</a>
+        </nav>
+    <?php endif; ?>
 </header>
-<main>
+<div class="container">

@@ -1,46 +1,39 @@
 <?php
+require_once __DIR__ . '/../config/database.php';
 
-class UserModel
-{
-    private mysqli $db;
+class UserModel {
+    private $conn;
+    private $table = 'users';
 
-    public function __construct(mysqli $db)
-    {
-        $this->db = $db;
+    public function __construct() {
+        $database = new Database();
+        $this->conn = $database->getConnection();
     }
 
-    // Look up a user by username for login
-    public function findByUsername(string $username): ?array
-    {
-        $sql  = "SELECT id, username, password_hash, role FROM users WHERE username = ?";
-        $stmt = $this->db->prepare($sql);
-        if (!$stmt) {
-            return null;
-        }
-
-        $stmt->bind_param('s', $username);
+    public function findByUsername($username) {
+        $query = "SELECT * FROM " . $this->table . " WHERE username = :username LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
         $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($row = $result->fetch_assoc()) {
-            return $row;
-        }
-
-        return null;
+        return $stmt->fetch();
     }
 
-    // Register a new user (role: USER by default)
-    public function create(string $username, string $password, string $role = 'USER'): bool
-    {
-        $hash = hash('sha256', $password);
+    public function verifyPassword($inputPassword, $hashedPassword) {
+        // Using SHA-256 as per design document
+        return hash('sha256', $inputPassword) === $hashedPassword;
+    }
 
-        $sql  = "INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)";
-        $stmt = $this->db->prepare($sql);
-        if (!$stmt) {
-            return false;
-        }
+    public function create($username, $password, $role = 'USER') {
+        $query = "INSERT INTO " . $this->table . " (username, password_hash, role) VALUES (:username, :password_hash, :role)";
+        $stmt = $this->conn->prepare($query);
 
-        $stmt->bind_param('sss', $username, $hash, $role);
+        $passwordHash = hash('sha256', $password);
+
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password_hash', $passwordHash);
+        $stmt->bindParam(':role', $role);
+
         return $stmt->execute();
     }
 }
+?>

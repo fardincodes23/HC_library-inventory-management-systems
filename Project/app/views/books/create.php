@@ -1,4 +1,4 @@
-<?php include VIEW_PATH . '/layout/header.php'; ?>
+<?php include __DIR__ . '/../layout/header.php'; ?>
 
 <h2>Add New Book</h2>
 
@@ -6,7 +6,10 @@
     <p style="color:red;"><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
 
-<form method="post" action="index.php?controller=book&action=create">
+
+
+    <form method="post" action="index.php?page=books_create">
+
     <div>
         <label for="title">Title:</label>
         <input type="text" name="title" id="title" required>
@@ -21,8 +24,10 @@
     </div>
     <div>
         <button type="submit">Save</button>
-        <a href="index.php?controller=book&action=index">Cancel</a>
-    </div>
+        <a href="index.php?page=books">Cancel</a>    </div>
 </form>
 
-<?php include VIEW_PATH . '/layout/footer.php'; ?>
+<?php include __DIR__ . '/../layout/footer.php'; ?>
+
+
+

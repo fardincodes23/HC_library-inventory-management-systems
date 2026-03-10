@@ -1,9 +1,11 @@
-<?php include VIEW_PATH . '/layout/header.php'; ?>
+
+<?php include __DIR__ . '/../layout/header.php'; ?>
 
 <h2>Book Inventory</h2>
 
 <p>
-    <a href="index.php?controller=book&action=create">Add New Book</a>
+
+    <a href="index.php?page=books_create">Add New Book</a>
 </p>
 
 <table border="1" cellpadding="5" cellspacing="0">
@@ -27,4 +29,4 @@
     <?php endif; ?>
 </table>
 
-<?php include VIEW_PATH . '/layout/footer.php'; ?>
+<?php include __DIR__ . '/../layout/footer.php'; ?>

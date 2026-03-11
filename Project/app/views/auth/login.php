@@ -14,6 +14,10 @@
         <input type="password" name="password" required>
     </label><br><br>
     <button type="submit">Login</button>
+    <br><br>
+    <label>
+        <a href="index.php?page=register">Register New Account</a>
+    </label>
 </form>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>

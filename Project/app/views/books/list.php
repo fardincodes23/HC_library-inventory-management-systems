@@ -8,7 +8,7 @@
     </p>
 <?php endif; ?>
 
-<table border="1" cellpadding="5" cellspacing="0">
+<table class="table table-striped table-hover table-bordered shadow-sm bg-white" cellpadding="5" cellspacing="0">
     <tr>
         <th>ID</th>
         <th>Title</th>

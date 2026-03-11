@@ -3,7 +3,7 @@
 <h2>Clients</h2>
 <p><a href="index.php?page=clients_create">Add Client</a></p>
 
-<table>
+<table class="table table-striped table-hover table-bordered shadow-sm bg-white">
     <tr>
         <th>ID</th><th>Name</th><th>Email</th><th>Phone</th>
     </tr>

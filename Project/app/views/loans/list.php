@@ -6,7 +6,7 @@
     <a href="index.php?page=loan_return">Return Book</a>
 </p>
 
-<table>
+<table class="table table-striped table-hover table-bordered shadow-sm bg-white">
     <tr>
         <th>ID</th><th>Book</th><th>Client</th><th>Loan Date</th><th>Due Date</th><th>Return Date</th>
     </tr>

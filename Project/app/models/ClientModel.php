@@ -11,7 +11,8 @@ class ClientModel {
     }
 
     public function getAll() {
-        $query = "SELECT * FROM " . $this->table . " ORDER BY name";
+        // Updated to show the newest clients first
+        $query = "SELECT * FROM " . $this->table . " ORDER BY id ASC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();

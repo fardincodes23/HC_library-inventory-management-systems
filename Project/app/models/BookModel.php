@@ -11,7 +11,8 @@ class BookModel {
     }
 
     public function getAll() {
-        $query = "SELECT * FROM " . $this->table . " ORDER BY type, title";
+        // Updated to show the newest books first
+        $query = "SELECT * FROM " . $this->table . " ORDER BY id ASC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();

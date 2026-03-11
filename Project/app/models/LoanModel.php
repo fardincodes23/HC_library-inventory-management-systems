@@ -15,7 +15,7 @@ class LoanModel {
                   FROM " . $this->table . " l 
                   INNER JOIN books b ON l.book_id = b.id 
                   INNER JOIN clients c ON l.client_id = c.id 
-                  ORDER BY l.loan_date DESC";
+                  ORDER BY l.id ASC"; // Updated to sort strictly by newest ID
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();

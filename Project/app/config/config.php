@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define('BASE_URL', 'http://localhost/LIMS/');
+define('BASE_URL', 'http://localhost/LIMS/Project/');
 define('APP_PATH', __DIR__ . '/../');
 
 // Autoload function for models

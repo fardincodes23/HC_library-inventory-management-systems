@@ -4,7 +4,7 @@
 
     <div class="hero-section text-center">
         <div class="container px-4">
-            <h1 class="display-3 fw-bold mb-4 text-white text-shadow" style="font-family: Georgia, serif;">Welcome to Library Inc.</h1>
+            <h1 class="display-3 fw-bold mb-4 text-white text-shadow" style="font-family: Georgia, serif;">Welcome to Library Information Management Systems.</h1>
             <p class="lead mb-5 fs-4 text-white text-shadow">Explore our vast collection of books, manage your loans, and discover your next great read.</p>
 
             <?php if (!isset($_SESSION['username'])): ?>

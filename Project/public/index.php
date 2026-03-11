@@ -66,7 +66,7 @@ if ($page === 'login') {
             $loanController->returnBook();
             break;
         default:
-            // 🌟 NEW: Dedicated Home Page!
+            //  NEW: Dedicated Home Page!
             include __DIR__ . '/../app/views/home.php';
             break;
     }

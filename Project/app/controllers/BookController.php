@@ -38,5 +38,49 @@ class BookController {
 
         include __DIR__ . '/../views/books/create.php';
     }
+
+    public function edit() {
+        requireLogin();
+        $id = $_GET['id'] ?? null;
+        if (!$id) { header('Location: index.php?page=books'); exit; }
+
+        $book = $this->bookModel->getById($id);
+        $error = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = $_POST['title'] ?? '';
+            $type = $_POST['type'] ?? '';
+            $publisher = $_POST['publisher'] ?? '';
+
+            if ($title && $type && $publisher) {
+                if ($this->bookModel->update($id, $title, $type, $publisher)) {
+                    header('Location: index.php?page=books');
+                    exit;
+                } else {
+                    $error = 'Error updating book.';
+                }
+            } else {
+                $error = 'All fields are required.';
+            }
+        }
+        include __DIR__ . '/../views/books/edit.php';
+    }
+
+    public function delete() {
+        requireLogin();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+            try {
+                $this->bookModel->delete($_POST['id']);
+            } catch (\PDOException $e) {
+                // Block deletion if the book is tied to existing loan records
+                if ($e->getCode() == '23000') {
+                    header('Location: index.php?page=books&error=in_use');
+                    exit;
+                }
+            }
+        }
+        header('Location: index.php?page=books');
+        exit;
+    }
 }
 ?>

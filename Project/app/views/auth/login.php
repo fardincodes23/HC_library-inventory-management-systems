@@ -9,6 +9,12 @@
                 </div>
 
                 <div class="card-body p-4 bg-white rounded-bottom">
+                    <?php if (isset($_GET['timeout']) && $_GET['timeout'] == 1): ?>
+                        <div class="alert alert-warning shadow-sm text-center">
+                            For your security, you have been logged out due to inactivity. Please sign in again.
+                        </div>
+                    <?php endif; ?>
+
                     <?php if (!empty($error)): ?>
                         <div class="alert alert-danger shadow-sm text-center"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>

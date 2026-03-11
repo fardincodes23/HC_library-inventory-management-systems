@@ -53,6 +53,27 @@ if ($page === 'login') {
             requireLogin();
             $clientController->create();
             break;
+
+        // --- Book Routes ---
+        case 'books_edit':
+            requireLogin();
+            $bookController->edit();
+            break;
+        case 'books_delete':
+            requireLogin();
+            $bookController->delete();
+            break;
+
+        // --- Client Routes ---
+        case 'clients_edit':
+            requireLogin();
+            $clientController->edit();
+            break;
+        case 'clients_delete':
+            requireLogin();
+            $clientController->delete();
+            break;
+
         case 'loans':
             requireLogin();
             $loanController->index();

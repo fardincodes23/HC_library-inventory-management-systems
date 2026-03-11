@@ -7,7 +7,7 @@ define('APP_PATH', __DIR__ . '/../');
 // ==========================================
 // 🌟 NEW: INACTIVITY TIMEOUT LOGIC
 // ==========================================
-$timeout_duration = 600; // 10 minutes in seconds 
+$timeout_duration = 60; // 1 minutes in seconds
 
 // Only check timeout if the user is actually logged in
 if (isset($_SESSION['user_id'])) {

@@ -26,46 +26,48 @@ if ($page === 'login') {
     $authController->login();
 } elseif ($page === 'logout') {
     $authController->logout();
-} elseif ($page === 'register') {
-    // Add this new route!
-    $authController->register();
-
 } else {
-    // Remove the global requireLogin() from here!
+    // All routes below this point are processed here
 
     switch ($page) {
+        case 'register':
+            requireLogin(); // Must be logged in
+            if (!isAdmin()) { // Must be an ADMIN
+                die("Access Denied: Only Administrators can create new accounts.");
+            }
+            $authController->register();
+            break;
         case 'books':
-            // Let's make viewing books public for clients!
+            // Publicly accessible book list
             $bookController->index();
             break;
         case 'books_create':
-            requireLogin(); // Staff only
+            requireLogin();
             $bookController->create();
             break;
         case 'clients':
-            requireLogin(); // Staff only
+            requireLogin();
             $clientController->index();
             break;
         case 'clients_create':
-            requireLogin(); // Staff only
+            requireLogin();
             $clientController->create();
             break;
         case 'loans':
-            requireLogin(); // Staff only
+            requireLogin();
             $loanController->index();
             break;
         case 'loan_checkout':
-            requireLogin(); // Staff only
+            requireLogin();
             $loanController->checkout();
             break;
         case 'loan_return':
-            requireLogin(); // Staff only
+            requireLogin();
             $loanController->returnBook();
             break;
         default:
-            // The list.php view already includes the header and footer,
-            // so we just need to call the controller!
-            $bookController->index();
+            // 🌟 NEW: Dedicated Home Page!
+            include __DIR__ . '/../app/views/home.php';
             break;
     }
 }

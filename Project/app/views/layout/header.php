@@ -22,6 +22,11 @@
             <a href="index.php?page=books">Books</a>
             <a href="index.php?page=clients">Clients</a>
             <a href="index.php?page=loans">Loans</a>
+
+            <?php if (isAdmin()): ?>
+                <a href="index.php?page=register">Add Staff</a>
+            <?php endif; ?>
+
             <a href="index.php?page=logout">Logout (<?= htmlspecialchars($_SESSION['username']) ?>)</a>
         </nav>
     <?php else: ?>

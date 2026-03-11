@@ -1,10 +1,8 @@
 <?php include __DIR__ . '/../layout/header.php'; ?>
 
-<?php if (!isset($_SESSION['username'])): ?>
-    <h2>Welcome to the Library</h2>
-    <p>Clients can browse our collection below:</p>
-<?php else: ?>
-    <h2>Book Inventory</h2>
+<h2>Book Inventory</h2>
+
+<?php if (isset($_SESSION['username'])): ?>
     <p>
         <a href="index.php?page=books_create">Add New Book</a>
     </p>

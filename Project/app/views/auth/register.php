@@ -10,7 +10,7 @@
     <p style="color:green;"><?= htmlspecialchars($success) ?></p>
 <?php endif; ?>
 
-    <form method="post" action="index.php?page=register">
+    <form method="post" action="index.php?page=register"> 
         <div>
             <label for="username">Username:</label>
             <input type="text" name="username" id="username" required>
@@ -25,7 +25,6 @@
         </div>
         <div>
             <button type="submit">Register</button>
-            <a href="index.php?page=login">Back to Login</a>
         </div>
     </form>
 

@@ -63,12 +63,9 @@ if ($page === 'login') {
             $loanController->returnBook();
             break;
         default:
-            // Public Home Page for Clients
-            include __DIR__ . '/../app/views/layout/header.php';
-            echo '<h2>Welcome to the Library</h2>';
-            echo '<p>Clients can browse our collection below:</p>';
-            $bookController->index(); // Show the book list directly on the home page
-            include __DIR__ . '/../app/views/layout/footer.php';
+            // The list.php view already includes the header and footer,
+            // so we just need to call the controller!
+            $bookController->index();
             break;
     }
 }

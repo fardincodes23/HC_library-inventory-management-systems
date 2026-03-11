@@ -1,12 +1,14 @@
-
 <?php include __DIR__ . '/../layout/header.php'; ?>
 
-<h2>Book Inventory</h2>
-
-<p>
-
-    <a href="index.php?page=books_create">Add New Book</a>
-</p>
+<?php if (!isset($_SESSION['username'])): ?>
+    <h2>Welcome to the Library</h2>
+    <p>Clients can browse our collection below:</p>
+<?php else: ?>
+    <h2>Book Inventory</h2>
+    <p>
+        <a href="index.php?page=books_create">Add New Book</a>
+    </p>
+<?php endif; ?>
 
 <table border="1" cellpadding="5" cellspacing="0">
     <tr>
@@ -30,3 +32,5 @@
 </table>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>
+
+

@@ -24,6 +24,11 @@
             <a href="index.php?page=loans">Loans</a>
             <a href="index.php?page=logout">Logout (<?= htmlspecialchars($_SESSION['username']) ?>)</a>
         </nav>
+    <?php else: ?>
+        <nav>
+            <a href="index.php">Home</a>
+            <a href="index.php?page=login">Staff/Admin Login</a>
+        </nav>
     <?php endif; ?>
 </header>
 <div class="container">

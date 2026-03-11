@@ -9,7 +9,7 @@ class BookController {
     }
 
     public function index() {
-        requireLogin();
+       // requireLogin();
         $books = $this->bookModel->getAll();
         include __DIR__ . '/../views/books/list.php';
     }

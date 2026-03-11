@@ -3,7 +3,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require_once __DIR__ . '/../app/config/config.php';
 
 
 require_once __DIR__ . '/../app/config/config.php';
@@ -11,6 +10,7 @@ require_once __DIR__ . '/../app/controllers/AuthController.php';
 require_once __DIR__ . '/../app/controllers/BookController.php';
 require_once __DIR__ . '/../app/controllers/ClientController.php';
 require_once __DIR__ . '/../app/controllers/LoanController.php';
+require_once __DIR__ . '/../app/controllers/SupplierController.php';
 
 
 $page = $_GET['page'] ?? '';
@@ -19,6 +19,7 @@ $authController = new AuthController();
 $bookController = new BookController();
 $clientController = new ClientController();
 $loanController = new LoanController();
+$supplierController = new SupplierController();
 
 
 
@@ -72,6 +73,26 @@ if ($page === 'login') {
         case 'clients_delete':
             requireLogin();
             $clientController->delete();
+            break;
+
+        // --- Supplier Routes ---
+        case 'suppliers':
+            requireLogin();
+            $supplierController->index();
+            break;
+        case 'suppliers_delete':
+            requireLogin();
+            $supplierController->delete();
+            break;
+
+        // Add these right near your other supplier routes!
+        case 'suppliers_create':
+            requireLogin();
+            $supplierController->create();
+            break;
+        case 'suppliers_edit':
+            requireLogin();
+            $supplierController->edit();
             break;
 
         case 'loans':

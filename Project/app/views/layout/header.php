@@ -22,7 +22,17 @@
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link text-light" href="index.php">Home</a></li>
                 <?php if (isset($_SESSION['username'])): ?>
-                    <li class="nav-item"><a class="nav-link text-light" href="index.php?page=books">Books</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Books Menu
+                        </a>
+                        <ul class="dropdown-menu shadow-sm border-0 mt-2">
+                            <li><a class="dropdown-item py-2" href="index.php?page=books">📚 Book Inventory</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2" href="index.php?page=suppliers">🏢 Supplier Directory</a></li>
+                        </ul>
+                    </li>
+
                     <li class="nav-item"><a class="nav-link text-light" href="index.php?page=clients">Clients</a></li>
                     <li class="nav-item"><a class="nav-link text-light" href="index.php?page=loans">Loans</a></li>
 

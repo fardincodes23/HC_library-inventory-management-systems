@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
-class ClientModel {
+class SupplierModel {
     private $conn;
-    private $table = 'clients';
+    private $table = "suppliers";
 
     public function __construct() {
         $database = new Database();
@@ -11,11 +11,25 @@ class ClientModel {
     }
 
     public function getAll() {
-        // Updated to show the newest clients first
-        $query = "SELECT * FROM " . $this->table . " ORDER BY id ASC";
+        // 🌟 NEW: Uses LEFT JOIN and GROUP_CONCAT to bundle book titles together!
+        $query = "SELECT s.*, GROUP_CONCAT(b.title SEPARATOR ', ') as supplied_books 
+                  FROM " . $this->table . " s 
+                  LEFT JOIN books b ON s.id = b.supplier_id 
+                  GROUP BY s.id 
+                  ORDER BY s.id DESC";
+
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+
+    public function create($name, $email, $phone) {
+        $query = "INSERT INTO " . $this->table . " (name, email, phone) VALUES (:name, :email, :phone)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':phone', $phone);
+        return $stmt->execute();
     }
 
     public function getById($id) {
@@ -26,49 +40,27 @@ class ClientModel {
         return $stmt->fetch();
     }
 
-    public function create($name, $email, $phone) {
-        $query = "INSERT INTO " . $this->table . " (name, email, phone) VALUES (:name, :email, :phone)";
-        $stmt = $this->conn->prepare($query);
-
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':phone', $phone);
-
-        return $stmt->execute();
-    }
-
     public function update($id, $name, $email, $phone) {
         $query = "UPDATE " . $this->table . " SET name = :name, email = :email, phone = :phone WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':phone', $phone);
-
         return $stmt->execute();
     }
 
     public function delete($id) {
-        // 1. Check if the client has any books currently checked out
-        $checkQuery = "SELECT COUNT(*) FROM loans WHERE client_id = :id AND return_date IS NULL";
+        // Smart deletion: Block if the supplier is tied to existing books
+        $checkQuery = "SELECT COUNT(*) FROM books WHERE supplier_id = :id";
         $checkStmt = $this->conn->prepare($checkQuery);
         $checkStmt->bindParam(':id', $id);
         $checkStmt->execute();
-        $activeLoans = $checkStmt->fetchColumn();
 
-        // If they have unreturned books, trigger the controller's error alert
-        if ($activeLoans > 0) {
-            throw new \PDOException("Client has active loans", 23000);
+        if ($checkStmt->fetchColumn() > 0) {
+            throw new \PDOException("Supplier is linked to existing books", 23000);
         }
 
-        // 2. If all loans are completed, delete their past loan history first
-        $deleteHistory = "DELETE FROM loans WHERE client_id = :id";
-        $histStmt = $this->conn->prepare($deleteHistory);
-        $histStmt->bindParam(':id', $id);
-        $histStmt->execute();
-
-        // 3. Finally, delete the client
         $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);

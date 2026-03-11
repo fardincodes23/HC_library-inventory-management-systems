@@ -2,41 +2,55 @@
 
     <div class="row justify-content-center mt-4">
         <div class="col-md-8 col-lg-6">
-
             <div class="card shadow border-0">
-                <div class="card-header bg-primary text-white py-3">
-                    <h4 class="mb-0">Add New Book</h4>
+                <div class="card-header text-white py-3" style="background-color: #8a8d91;">
+                    <h4 class="mb-0" style="font-family: Georgia, serif;">Add New Book</h4>
                 </div>
-
-                <div class="card-body p-4 bg-white">
+                <div class="card-body p-4 bg-white rounded-bottom">
                     <?php if (!empty($error)): ?>
-                        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                        <div class="alert alert-danger shadow-sm"><?= htmlspecialchars($error) ?></div>
                     <?php endif; ?>
 
                     <form method="post" action="index.php?page=books_create">
                         <div class="mb-3">
-                            <label for="title" class="form-label fw-bold">Title</label>
-                            <input type="text" name="title" id="title" class="form-control" placeholder="e.g. The Pragmatic Programmer" required>
+                            <label class="form-label fw-bold text-secondary">Book Title</label>
+                            <input type="text" name="title" class="form-control bg-light border-0 shadow-sm" required>
                         </div>
 
                         <div class="mb-3">
-                            <label for="type" class="form-label fw-bold">Type (Genre)</label>
-                            <input type="text" name="type" id="type" class="form-control" placeholder="e.g. Programming" required>
+                            <label class="form-label fw-bold text-secondary">Type (Genre)</label>
+                            <input type="text" name="type" class="form-control bg-light border-0 shadow-sm" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-secondary">Publisher</label>
+                            <input type="text" name="publisher" class="form-control bg-light border-0 shadow-sm"
+                                   required>
                         </div>
 
                         <div class="mb-4">
-                            <label for="publisher" class="form-label fw-bold">Publisher</label>
-                            <input type="text" name="publisher" id="publisher" class="form-control" placeholder="e.g. Addison-Wesley" required>
+                            <label for="supplier_id" class="form-label fw-bold text-secondary">Supplier Details</label>
+                            <select name="supplier_id" id="supplier_id" class="form-select bg-light border-0 shadow-sm">
+                                <option value="">-- Independent / No Supplier --</option>
+                                <?php if (!empty($suppliers)): ?>
+                                    <?php foreach ($suppliers as $supplier): ?>
+                                        <option value="<?= htmlspecialchars($supplier['id']) ?>">
+                                            <?= htmlspecialchars($supplier['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
                         </div>
 
-                        <div class="d-flex justify-content-end gap-2">
-                            <a href="index.php?page=books" class="btn btn-light border">Cancel</a>
-                            <button type="submit" class="btn btn-primary px-4">Save Book</button>
+                        <div class="d-flex justify-content-end gap-3 mt-4">
+                            <a href="index.php?page=books" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn px-4 shadow-sm"
+                                    style="background-color: #c5a059; color: #fff; border: none;">Save Book
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 

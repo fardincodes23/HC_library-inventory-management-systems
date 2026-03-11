@@ -5,7 +5,7 @@
 
         <?php if (isset($_GET['error']) && $_GET['error'] === 'in_use'): ?>
             <div class="alert alert-danger shadow-lg border-0 alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-4" style="z-index: 1050; width: max-content; max-width: 90vw;" role="alert">
-                <strong>⚠️ Action Denied:</strong> Cannot delete this client because they are linked to existing loan history records.
+                <strong>⚠️ Action Denied:</strong> Cannot delete this client because they currently have unreturned books.
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>

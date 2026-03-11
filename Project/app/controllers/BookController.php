@@ -9,33 +9,48 @@ class BookController {
     }
 
     public function index() {
-       // requireLogin();
-        $books = $this->bookModel->getAll();
+        // requireLogin(); // Keep commented out for public access
+
+        $search = trim($_GET['search'] ?? '');
+        $sort = $_GET['sort'] ?? 'newest'; // 🌟 NEW: Get the sort option or default to 'newest'
+
+        if ($search !== '') {
+            $books = $this->bookModel->searchBooks($search, $sort); // 🌟 Pass $sort here
+        } else {
+            $books = $this->bookModel->getAll($sort); // 🌟 Pass $sort here
+        }
+
         include __DIR__ . '/../views/books/list.php';
     }
-
     public function create() {
         requireLogin();
         $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $title = trim($_POST['title'] ?? '');
-            $type = trim($_POST['type'] ?? '');
-            $publisher = trim($_POST['publisher'] ?? '');
-            $supplier_id = $_POST['supplier_id'] !== '' ? (int)$_POST['supplier_id'] : null;
+            $title = $_POST['title'] ?? '';
+            $type = $_POST['type'] ?? '';
+            $publisher = $_POST['publisher'] ?? '';
 
-            if ($title === '' || $type === '' || $publisher === '') {
-                $error = 'All fields except supplier are required.';
-            } else {
+            // 🌟 FIX: If no supplier is sent from the form, set it to NULL instead of 0
+            $supplier_id = !empty($_POST['supplier_id']) ? $_POST['supplier_id'] : null;
+
+            if ($title && $type && $publisher) {
+                // Pass the null supplier_id safely to the model
                 if ($this->bookModel->create($title, $type, $publisher, $supplier_id)) {
                     header('Location: index.php?page=books');
                     exit;
                 } else {
-                    $error = 'Error saving book.';
+                    $error = 'Error adding book.';
                 }
+            } else {
+                $error = 'All fields are required.';
             }
         }
 
+        // 🌟 NEW: Fetch suppliers so the dropdown works!
+        require_once __DIR__ . '/../models/SupplierModel.php';
+        $supplierModel = new SupplierModel();
+        $suppliers = $supplierModel->getAll();
         include __DIR__ . '/../views/books/create.php';
     }
 
@@ -52,8 +67,13 @@ class BookController {
             $type = $_POST['type'] ?? '';
             $publisher = $_POST['publisher'] ?? '';
 
+            // Add this exact same line:
+            $supplier_id = !empty($_POST['supplier_id']) ? $_POST['supplier_id'] : null;
+
             if ($title && $type && $publisher) {
-                if ($this->bookModel->update($id, $title, $type, $publisher)) {
+                // Make sure to pass $supplier_id to the update function!
+                if ($this->bookModel->update($id, $title, $type, $publisher, $supplier_id)) {
+
                     header('Location: index.php?page=books');
                     exit;
                 } else {
@@ -63,6 +83,11 @@ class BookController {
                 $error = 'All fields are required.';
             }
         }
+
+        // 🌟 NEW: Fetch suppliers so the dropdown works!
+        require_once __DIR__ . '/../models/SupplierModel.php';
+        $supplierModel = new SupplierModel();
+        $suppliers = $supplierModel->getAll();
         include __DIR__ . '/../views/books/edit.php';
     }
 

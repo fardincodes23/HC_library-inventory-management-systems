@@ -36,7 +36,7 @@
             <?php if (!empty($clients)): ?>
                 <?php foreach ($clients as $client): ?>
                     <tr>
-                        <td class="fw-bold text-muted">#<?= htmlspecialchars($client['id']) ?></td>
+                        <td class="fw-bold text-muted"><?= htmlspecialchars($client['id']) ?></td>
                         <td class="fw-medium text-dark"><?= htmlspecialchars($client['name']) ?></td>
                         <td><?= htmlspecialchars($client['email']) ?></td>
                         <td><?= htmlspecialchars($client['phone']) ?></td>

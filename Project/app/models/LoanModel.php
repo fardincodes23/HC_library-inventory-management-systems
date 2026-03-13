@@ -33,6 +33,23 @@ class LoanModel {
         return $stmt->fetchAll();
     }
 
+    public function getOverdueLoans() {
+        // 🌟 NEW: Joins the tables and calculates how many days late it is!
+        $query = "SELECT l.id, l.loan_date, l.due_date, 
+                         b.title as book_title, 
+                         c.name as client_name, c.phone, c.email,
+                         DATEDIFF(CURRENT_DATE, l.due_date) as days_overdue
+                  FROM " . $this->table . " l
+                  JOIN books b ON l.book_id = b.id
+                  JOIN clients c ON l.client_id = c.id
+                  WHERE l.return_date IS NULL AND l.due_date < CURRENT_DATE
+                  ORDER BY l.due_date ASC";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     public function checkBookAvailability($book_id) {
         $query = "SELECT COUNT(*) as count FROM " . $this->table . " WHERE book_id = :book_id AND return_date IS NULL";
         $stmt = $this->conn->prepare($query);

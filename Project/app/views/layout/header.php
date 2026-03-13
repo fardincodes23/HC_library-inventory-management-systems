@@ -35,6 +35,7 @@
 
                     <li class="nav-item"><a class="nav-link text-light" href="index.php?page=clients">Clients</a></li>
                     <li class="nav-item"><a class="nav-link text-light" href="index.php?page=loans">Loans</a></li>
+                    <li class="nav-item"><a class="nav-link text-warning fw-bold" href="index.php?page=loans_overdue">⚠️ Overdue Report</a></li>
 
                     <?php if (isAdmin()): ?>
                         <li class="nav-item"><a class="nav-link" style="color: #c5a059;" href="index.php?page=register">Add Staff</a></li>

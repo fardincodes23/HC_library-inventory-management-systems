@@ -9,24 +9,36 @@ class AuthController {
     }
 
     public function login() {
+        $error = '';
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = trim($_POST['username'] ?? '');
-            $password = trim($_POST['password'] ?? '');
+            $password = $_POST['password'] ?? '';
 
-            $user = $this->userModel->findByUsername($username);
+            if ($username && $password) {
+                // 1. Get the user from the database
+                $user = $this->userModel->getByUsername($username);
 
-            if ($user && $this->userModel->verifyPassword($password, $user['password_hash'])) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role'];
+                // 2. Verify the user exists AND the password matches the hash
+                if ($user && password_verify($password, $user['password_hash'])) {
 
-                header('Location: index.php');
-                exit;
+                    // 3. Set the session variables
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['role'] = $user['role'] ?? 'STAFF';
+
+                    // 4. Send them to the dashboard/books page
+                    header('Location: index.php?page=books');
+                    exit;
+                } else {
+                    $error = 'Invalid username or password.';
+                }
             } else {
-                $error = 'Invalid username or password';
+                $error = 'Please enter both username and password.';
             }
         }
 
+        // Load the login view if not POST or if there was an error
         include __DIR__ . '/../views/auth/login.php';
     }
 
@@ -43,7 +55,7 @@ class AuthController {
                 $error = 'All fields are required.';
             } elseif ($password !== $confirm_password) {
                 $error = 'Passwords do not match.';
-            } elseif ($this->userModel->findByUsername($username)) {
+            } elseif ($this->userModel->getByUsername($username)) {
                 $error = 'Username already exists.';
             } else {
                 // Creates a new user with the default 'USER' role

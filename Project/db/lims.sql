@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2026 at 07:53 PM
+-- Generation Time: Mar 13, 2026 at 06:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -50,7 +50,9 @@ INSERT INTO `books` (`id`, `title`, `type`, `publisher`, `supplier_id`) VALUES
 (8, 'Computer Networks', 'Academic', 'Pearson', 5),
 (9, 'Artificial Intelligence: A Modern Approach', 'Academic', 'Pearson', 5),
 (10, 'The Catcher in the Rye', 'Fiction', 'Little, Brown and Company', 6),
-(11, 'Deep Learning', 'Academic', 'MIT Press', NULL);
+(11, 'Deep Learning', 'Academic', 'MIT Press', NULL),
+(12, 'Life of Fardin The Great', 'History', 'Farhan Farhan ', NULL),
+(13, 'Introduction to PHP', 'Programming', 'Joey Kitson', NULL);
 
 -- --------------------------------------------------------
 
@@ -100,14 +102,18 @@ CREATE TABLE `loans` (
 INSERT INTO `loans` (`id`, `book_id`, `client_id`, `loan_date`, `due_date`, `return_date`) VALUES
 (1, 1, 1, '2026-03-01', '2026-03-15', '2026-03-11'),
 (2, 4, 2, '2026-02-15', '2026-03-01', '2026-02-28'),
-(3, 3, 3, '2026-02-10', '2026-03-01', NULL),
+(3, 3, 3, '2026-02-10', '2026-03-01', '2026-03-13'),
 (4, 2, 1, '2026-03-05', '2026-03-20', NULL),
 (5, 4, 2, '2026-03-06', '2026-03-21', NULL),
 (6, 1, 3, '2026-03-07', '2026-03-22', NULL),
 (7, 3, 1, '2026-02-20', '2026-03-05', '2026-03-03'),
 (8, 2, 2, '2026-02-15', '2026-03-01', '2026-02-28'),
 (9, 4, 3, '2026-02-18', '2026-03-04', NULL),
-(10, 1, 2, '2026-03-09', '2026-03-23', NULL);
+(10, 1, 2, '2026-03-09', '2026-03-23', NULL),
+(11, 9, 2, '2026-03-13', '2026-03-31', NULL),
+(12, 7, 1, '2026-03-13', '2026-03-02', NULL),
+(13, 11, 4, '2026-03-13', '2026-03-12', NULL),
+(14, 8, 5, '2026-03-13', '2026-03-14', NULL);
 
 -- --------------------------------------------------------
 
@@ -146,6 +152,16 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `role` varchar(20) DEFAULT 'STAFF'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password_hash`, `role`) VALUES
+(1, 'admin', '$2y$10$1xuHo.YVGZDJMABDflUiKu5fDtCLupu3YEzwIZ33mDPmxIR6JWJ5.', 'ADMIN'),
+(3, 'joey', '$2y$10$5pQQJlK4.uD6ykPHZYBh0umg7J7SorpPB3ME4fKWpAvGgtMaL4RmW', 'STAFF'),
+(4, 'fardin', '$2y$10$vyE92DrCG3BhgEbk6dCnAO7zUoEetNd2/hG/A7jdizY0/tP22JX2a', 'STAFF'),
+(5, 'farhan', '$2y$10$pD0IFz9bbvBQxjZy5hJ6gePGrqmakgmKMG2OTqU1Hb4sQRc6h0JF.', 'STAFF');
 
 --
 -- Indexes for dumped tables
@@ -193,7 +209,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `clients`
@@ -205,19 +221,19 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

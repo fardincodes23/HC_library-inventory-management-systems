@@ -17,6 +17,11 @@ class LoanController {
         $loans = $this->loanModel->getAll();
         include __DIR__ . '/../views/loans/list.php';
     }
+    public function overdue() {
+        requireLogin();
+        $overdueLoans = $this->loanModel->getOverdueLoans();
+        include __DIR__ . '/../views/loans/overdue.php';
+    }
 
     public function checkout() {
         requireLogin();

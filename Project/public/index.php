@@ -107,6 +107,10 @@ if ($page === 'login') {
             requireLogin();
             $loanController->returnBook();
             break;
+        case 'loans_overdue':
+            requireLogin();
+            $loanController->overdue();
+            break;
         default:
             //  NEW: Dedicated Home Page!
             include __DIR__ . '/../app/views/home.php';

@@ -26,7 +26,7 @@
             <?php if (!empty($loans)): ?>
                 <?php foreach ($loans as $loan): ?>
                     <tr>
-                        <td class="text-muted">#<?= htmlspecialchars($loan['id']) ?></td>
+                        <td class="text-muted"><?= htmlspecialchars($loan['id']) ?></td>
                         <td class="fw-medium"><?= htmlspecialchars($loan['book_title'] ?? 'Unknown Book') ?></td>
                         <td><?= htmlspecialchars($loan['client_name'] ?? 'Unknown Client') ?></td>
                         <td><?= htmlspecialchars($loan['loan_date']) ?></td>

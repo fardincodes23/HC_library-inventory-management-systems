@@ -72,7 +72,7 @@
                 <?php $row_count = 1; // 🌟 Start the counter ?>
                 <?php foreach ($books as $book): ?>
                     <tr>
-                        <td class="fw-bold text-muted">#<?= htmlspecialchars($book['id']) ?></td>
+                        <td class="fw-bold text-muted"><?= htmlspecialchars($book['id']) ?></td>
                         <td class="fw-medium text-dark"><?= htmlspecialchars($book['title']) ?></td>
                         <td><span class="badge"
                                   style="background-color: #8a8d91;"><?= htmlspecialchars($book['type']) ?></span></td>
